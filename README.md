@@ -1,10 +1,12 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Commandes à lancer
 
-## Available Scripts
+Pour lancer le projet:
 
-In the project directory, you can run:
+### `yarn`
 
-### `npm start`
+Installe les packages du projet
+
+### `yarn start`
 
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -12,57 +14,92 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 
-### `npm test`
+## But de l'exercice
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Remplacer le form submit par un event sur élément du dom
 
-### `npm run build`
+Un form permets de déclencher la fonction onSubmit de ce dernier par le click d'un élément button à l'interieur de celui-ci.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Il exist une autre façon de parvenir au même résultat.
+Il faut supprimer le form et utiliser l'évenement `onClick` disponible sur tous les éléments du dom.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+On peut par exemple garder l'élément button ici présent ou bien utiliser une balise <div/> et affecter à l'event onClick une fonction
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+<form onSubmit={this.handleSubmit}>
+<label htmlFor="new-todo">What needs to be done?</label>
+<input
+    id="new-todo"
+    onChange={this.handleChange}
+    value={this.state.text}
+    />
+<button>Add #{this.state.items.length + 1}</button>
+</form>
+```
 
-### `npm run eject`
+### Ajouter une classe TodoListItem
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+La classe TodoList :
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+export default class TodoList extends Component {
+  static propTypes = {
+    items: T.arrayOf(item),
+  };
+  render() {
+    return (
+      <ul>
+        {this.props.items.map(item => <li key={item.id}>{item.text}</li>)}
+      </ul>
+    );
+  }
+}
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Ici, le code est juste. Mais un peu de refactoring ne ferait pas de mal.
+On peut décomposer la TodoList en 2 parties:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- La liste
+- une ligne
 
-## Learn More
+Il faut donc extraire la partie item(une ligne) dans un fichier `Item.js`.
+Il faudra ensuite importer l'Item dans la TodoList et remplacer l'ancien code par le composant Item.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Ajouter la suppression d'un item de la TodoListe
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Ici il va falloir ajouter un bouton (balise button ou div) et créer une fonction qui va gérer la suppression de l'élément correspondant dans la liste.
 
-### Code Splitting
+Pour se faire, il faudra ajouter une props `onDelete` au composant Item et TodoList précédemment créé. C'est ce qu'on appel un `eventHandler`.
+On va délégué l'événemment de suppression à la classe TodoList qui elle même va déléguer la suppression à la classe parente.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+C'est cette classe parente (App.js) qui gère la liste de données, c'est donc elle qui doit effectuer l'action de supprimer un élément de la liste dans la fonction du onDelete.
 
-### Analyzing the Bundle Size
+Voici un exemple :
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+```
+ <TodoList onDelete={this.handleDelete} items={this.state.items} />
+```
 
-### Making a Progressive Web App
+```
+ <Item onDelete={this.props.onDelete} ...otherProps/>
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+```
+ export default class Item extends Component {
+  render() {
+    return (
+      <li>{this.props.data.text}
+        <div onClick={this.props.onDelete}>Supprimer</div>
+      </li>
+    );
+  }
+}
+```
 
-### Advanced Configuration
+### Ajouter la possibilité de cocher un item
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+Il faut ajouter un input de type checkbox. Si t'en es la go voir google comment ca marche j'ai pas le temps la ^^
 
-### Deployment
+### Mise en forme de la TodoList
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Pareil, fait ca en dernier. Je complèterais plutard
