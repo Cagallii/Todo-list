@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import T from 'prop-types';
 
+import Item from './Item';
+
 const item = T.shape({
   text: T.string,
   id: T.number,
@@ -13,7 +15,7 @@ export default class TodoList extends Component {
   render() {
     return (
       <ul>
-        {this.props.items.map(item => <li key={item.id}>{item.text}</li>)}
+        {this.props.items.map(item => <Item key={item.id} text={item.text} />)}
       </ul>
     );
   }
