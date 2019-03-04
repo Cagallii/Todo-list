@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import TodoList from './components/TodoList';
 
 export default class App extends Component {
@@ -11,20 +10,23 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <h3>TODO</h3>
-        <TodoList items={this.state.items} />
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="new-todo">What needs to be done?</label>
+        <h3>Todo-list</h3>
+        <TodoList onDelete={this.handleDelete} items={this.state.items} />
+                  <label htmlFor="new-todo">What needs to be done?</label>
           <input
             id="new-todo"
             onChange={this.handleChange}
             value={this.state.text}
           />
-          <button>Add #{this.state.items.length + 1}</button>
-        </form>
+          <button onClick={this.handleSubmit}>Add to list</button>
       </div>
     );
   }
+
+  handleDelete = id =>{
+   const newItems = this.state.items.filter(item => item.id !==id)
+    this.setState({items: newItems })
+  };
 
   handleChange = e => {
     this.setState({ text: e.target.value });
