@@ -12,20 +12,20 @@ export default class App extends Component {
       <div>
         <h3>Todo-list</h3>
         <TodoList onDelete={this.handleDelete} items={this.state.items} />
-                  <label htmlFor="new-todo">What needs to be done?</label>
-          <input
-            id="new-todo"
-            onChange={this.handleChange}
-            value={this.state.text}
-          />
-          <button onClick={this.handleSubmit}>Add to list</button>
+        <label htmlFor="new-todo">What needs to be done?</label>
+        <input
+          id="new-todo"
+          onChange={this.handleChange}
+          value={this.state.text}
+        />
+        <button onClick={this.handleSubmit}>Add to list</button>
       </div>
     );
   }
 
-  handleDelete = id =>{
-   const newItems = this.state.items.filter(item => item.id !==id)
-    this.setState({items: newItems })
+  handleDelete = id => {
+    const newItems = this.state.items.filter(item => item.id !== id);
+    this.setState({ items: newItems });
   };
 
   handleChange = e => {
