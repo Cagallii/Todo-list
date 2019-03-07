@@ -11,7 +11,7 @@ export default class App extends Component {
     return (
       <div>
         <h3>Todo-list</h3>
-        <TodoList onDelete={this.handleDelete} items={this.state.items} />
+        <TodoList onDelete={this.handleDelete} onCheckItemChange={this.handleCheckItemChange} items={this.state.items} />
         <label htmlFor="new-todo">What needs to be done?</label>
         <input
           id="new-todo"
@@ -28,6 +28,18 @@ export default class App extends Component {
     this.setState({ items: newItems });
   };
 
+ handleCheckItemChange = id => {
+    const {items} = this.state;
+
+    const foundItem = items.find(item => item.id === id);
+    foundItem.checked = !!foundItem.checked;
+
+    const filteredItems = items.filter(item => item.id !== id);
+    const newItems = [...filteredItems, ...[foundItem]];
+
+    this.setState({items: newItems});
+  }
+
   handleChange = e => {
     this.setState({ text: e.target.value });
   };
@@ -40,6 +52,7 @@ export default class App extends Component {
     const newItem = {
       text: this.state.text,
       id: Date.now(),
+      checked: false
     };
     this.setState(state => ({
       items: state.items.concat(newItem),
