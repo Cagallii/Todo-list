@@ -9,16 +9,18 @@ export default class App extends Component {
 
   render() {
     return (
-      <div>
-        <h3>Todo-list</h3>
+      <div className="container">
+        <h3 className="titre">Todo-list</h3>
         <TodoList onDelete={this.handleDelete} onCheckItemChange={this.handleCheckItemChange} items={this.state.items} />
-        <label htmlFor="new-todo">What needs to be done?</label>
-        <input
-          id="new-todo"
-          onChange={this.handleChange}
-          value={this.state.text}
-        />
-        <button onClick={this.handleSubmit}>Add to list</button>
+        <div className="itemCreationContainer">
+          <label className="question" htmlFor="new-todo">What needs to be done?</label>
+          <input
+            id="new-todo"
+            onChange={this.handleChange}
+            value={this.state.text}
+          />
+        </div>
+        <button className="buttonAdd" onClick={this.handleSubmit}>Add to list</button>
       </div>
     );
   }
@@ -31,11 +33,12 @@ export default class App extends Component {
  handleCheckItemChange = id => {
     const {items} = this.state;
 
-    const foundItem = items.find(item => item.id === id);
-    foundItem.checked = !!foundItem.checked;
-
-    const filteredItems = items.filter(item => item.id !== id);
-    const newItems = [...filteredItems, ...[foundItem]];
+    const newItems = items.map(item => {
+      if(item.id === id) {
+        item.checked= !item.checked;
+      }
+      return item;
+    })
 
     this.setState({items: newItems});
   }

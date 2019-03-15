@@ -11,12 +11,14 @@ export default class Item extends Component {
 
   render() {
     return (
-      <li>
+      <li className="itemList">
+      <div>
         <input type="checkbox" checked={this.props.data.checked} onChange={() => this.props.onCheckItemChange(this.props.data.id)}></input>
         {this.props.data.text}
-        <button onClick={() => this.props.onDelete(this.props.data.id)}>
-          Delete
-        </button>
+      </div>
+      <div className="buttonDelete" onClick={() => this.props.onDelete(this.props.data.id)}>
+          X
+      </div>
       </li>
     );
   }
